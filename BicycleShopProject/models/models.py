@@ -62,6 +62,7 @@ class Order(models.Model):
     PROCESSING = 2
     REJECTED = 3
     COMPLETED = 4
+    DRAFT = 5
 
     order_id = models.IntegerField(primary_key=True)
     customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, db_column='customer_id')
@@ -69,7 +70,8 @@ class Order(models.Model):
         (PENDING, 'Pending'),
         (PROCESSING, 'Processing'),
         (REJECTED, 'Rejected'),
-        (COMPLETED, 'Completed')
+        (COMPLETED, 'Completed'),
+        (DRAFT, 'Draft')
     ])
     order_date = models.DateField()
     required_date = models.DateField()
