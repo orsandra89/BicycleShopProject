@@ -176,3 +176,15 @@ def add_item_to_order(request, order_id, item_id):
 #         return redirect('home')  # Redirect to the desired page after login
 #     else:
 #         return JsonResponse({'error': 'Invalid credentials'}, status=400)
+
+@csrf_exempt
+@require_POST
+def delete_item_from_order(request, order_id, item_id):
+    try:
+        get_object_or_404(Order, order_id=order_id)
+        order_item = get_object_or_404(OrderItem, order_item_id=item_id)
+        order_item.delete()
+
+        return JsonResponse({'message': 'Order item deleted successfully'}, status=200)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)

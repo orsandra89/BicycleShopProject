@@ -28,4 +28,5 @@ urlpatterns = [
     path('customer/<int:customer_id>/orders/<int:order_id>/', views.customer_order_ids, name='user_order_ids'),
     path('customer/<int:customer_id>/create_order/', views.create_order, name='create_order'),
     path('orders/<int:order_id>/add-item/<int:item_id>', views.add_item_to_order, name='add_item_to_order'),
+    path('orders/<int:order_id>/delete-item/<int:item_id>', views.delete_item_from_order, name='delete_item_from_order'),
 ]
