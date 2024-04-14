@@ -10,6 +10,8 @@ from BicycleShopProject.models.models import Product, Order, Customer, OrderItem
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET, require_POST
 
+from datetime import datetime
+
 # def bicycle_list(request):
 #     bicycles = Product.objects.all()
 #     return render(request, {'bicycles': bicycles})
@@ -96,6 +98,7 @@ def create_order(request, customer_id):
         state = Order.DRAFT
         print(order_id)
         print(customer)
+        n = datetime.now().date()
 
         # Check if user_id and product_id are provided
         if not order_id:
@@ -105,7 +108,8 @@ def create_order(request, customer_id):
         order = Order.objects.create(
             customer_id=customer,
             order_id=order_id,
-            order_status=state
+            order_status=state,
+            order_date= n
         )
 
         return JsonResponse({'order_id': order.order_id}, status=201)

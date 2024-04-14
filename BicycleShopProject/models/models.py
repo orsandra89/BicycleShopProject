@@ -74,10 +74,10 @@ class Order(models.Model):
         (DRAFT, 'Draft')
     ])
     order_date = models.DateField()
-    required_date = models.DateField()
+    required_date = models.DateField(null=True, blank=True)
     shipped_date = models.DateField(null=True, blank=True)
-    store_id = models.ForeignKey(Store, on_delete=models.CASCADE, db_column='store_id')
-    staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE, db_column='staff_id')
+    store_id = models.ForeignKey(Store, null=True, on_delete=models.CASCADE, db_column='store_id')
+    staff_id = models.ForeignKey(Staff, null=True, on_delete=models.CASCADE, db_column='staff_id')
 
     class Meta:
         db_table = 'orders'
