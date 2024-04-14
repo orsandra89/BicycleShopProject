@@ -188,3 +188,14 @@ def delete_item_from_order(request, order_id, item_id):
         return JsonResponse({'message': 'Order item deleted successfully'}, status=200)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+
+@csrf_exempt
+@require_POST
+def delete_all_items_from_order(request, order_id):
+    try:
+        get_object_or_404(OrderItem, order_id=order_id)
+        OrderItem.objects.all().delete()
+
+        return JsonResponse({'message': 'All items from the order have been deleted successfully'}, status=200)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
