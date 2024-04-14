@@ -119,7 +119,7 @@ def create_order(request, customer_id):
 
 @csrf_exempt
 @require_POST
-def add_item_to_order(request, order_id):
+def add_item_to_order(request, order_id, item_id):
     try:
         order = get_object_or_404(Order, order_id=order_id)
         data = json.loads(request.body)
@@ -137,14 +137,14 @@ def add_item_to_order(request, order_id):
 
         # Create the order item
         order_item = OrderItem.objects.create(
-            order=order,
-            product=product,
+            order_id=order,
+            product_id=product,
             quantity=quantity,
-            list_price=product.price,
+            list_price=product.list_price,
             discount=0
         )
 
-        return JsonResponse({'order_item_id': order_item.id}, status=201)
+        return JsonResponse({'order_item_id': order_item.order_item_id}, status=201)
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON data'}, status=400)
     except Product.DoesNotExist:
