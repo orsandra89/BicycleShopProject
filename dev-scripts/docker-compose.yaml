@@ -26,7 +26,7 @@ services:
 #      - internal-network
 
   pgadmin:
-    container_name: pgadmin4_container
+    container_name: pgadmin4_container-${PROJECT_NAME}
     image: dpage/pgadmin4
     restart: always
     environment:
