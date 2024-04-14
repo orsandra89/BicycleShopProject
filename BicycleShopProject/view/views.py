@@ -72,15 +72,16 @@ def get_order_list_for_customer(request, customer_id):
 def customer_order_ids(request, customer_id, order_id):
     try:
         order = Order.objects.get(customer_id=customer_id, order_id=order_id)
+        items = list(OrderItem.objects.filter(order_id=order_id).values())
         order_data = {
             'id': order.order_id,
             'customer_name': order.customer_id.first_name,
             'customer_last_name': order.customer_id.last_name,
             'order_status': order.order_status,
             'order_date': order.order_date,
-            'store_name': order.store_id.store_name,
-            'seller_name': order.staff_id.first_name,
-            'seller_last_name': order.staff_id.last_name
+            'items': items,
+            'store': order.store_id,
+            'seller': order.staff_id
         }
         return JsonResponse(order_data)
     except Order.DoesNotExist:
