@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    container_name: dev-postgres-${PROJECT_NAME}
+    environment:
+      - POSTGRES_DB=zsbd
+      - POSTGRES_USER=zsbd
+      - POSTGRES_PASSWORD=zsbd
+    ports:
+      - 5432:5432
+    networks:
+      - internal-network
+
+#  mailhog:
+#    image: mailhog/mailhog
+#    container_name: dev-mailhog
+#    restart: always
+#    environment:
+#      "MH_UI_WEB_PATH": "mailhog"
+#    ports:
+#      - 1025:1025
+#      - 8025:8025
+#    networks:
+#      - internal-network
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"   
+    networks:
+      - internal-network
+    depends_on:
+      - db
+
+networks:
+  internal-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.24.25.0/24"
