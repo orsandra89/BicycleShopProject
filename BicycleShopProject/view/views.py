@@ -136,13 +136,23 @@ def add_item_to_order(request, order_id, item_id):
         product = get_object_or_404(Product, pk=product_id)
 
         # Create the order item
-        order_item = OrderItem.objects.create(
-            order_id=order,
-            product_id=product,
-            quantity=quantity,
-            list_price=product.list_price,
-            discount=0
-        )
+
+        try:
+            order_item = OrderItem.objects.get(order_id=order, product_id=product)
+            order_item.quantity += quantity
+            order_item.save(update_fields=['quantity'])
+            return JsonResponse({'order_item_id': order_item.order_item_id}, status=201)
+
+        except OrderItem.DoesNotExist:
+            order_item = OrderItem.objects.create(
+                order_id=order,
+                product_id=product,
+                quantity=quantity,
+                list_price=product.list_price,
+                discount=0
+            )
+            return JsonResponse({'order_item_id': order_item.order_item_id}, status=201)
+
 
         return JsonResponse({'order_item_id': order_item.order_item_id}, status=201)
     except json.JSONDecodeError:
