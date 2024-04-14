@@ -193,8 +193,8 @@ def delete_item_from_order(request, order_id, item_id):
 @require_POST
 def delete_all_items_from_order(request, order_id):
     try:
-        get_object_or_404(OrderItem, order_id=order_id)
-        OrderItem.objects.all().delete()
+        for order in list(OrderItem.objects.filter(order_id= order_id)):
+            order.delete()
 
         return JsonResponse({'message': 'All items from the order have been deleted successfully'}, status=200)
     except Exception as e:
