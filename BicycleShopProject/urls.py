@@ -30,4 +30,5 @@ urlpatterns = [
     path('orders/<int:order_id>/add-item/<int:item_id>', views.add_item_to_order, name='add_item_to_order'),
     path('orders/<int:order_id>/delete-item/<int:item_id>', views.delete_item_from_order, name='delete_item_from_order'),
     path('orders/<int:order_id>/delete-all-items/', views.delete_all_items_from_order, name='delete_all_items_from_order'),
+    path('orders/<int:order_id>/finalize-order/', views.change_order_status, name='change_order_status'),
 ]

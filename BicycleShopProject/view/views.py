@@ -97,8 +97,6 @@ def create_order(request, customer_id):
         # Retrieve fields from the parsed data
         order_id = data.get('order_id')
         state = Order.DRAFT
-        print(order_id)
-        print(customer)
         n = datetime.now().date()
 
         # Check if user_id and product_id are provided
@@ -207,5 +205,20 @@ def delete_all_items_from_order(request, order_id):
             order.delete()
 
         return JsonResponse({'message': 'All items from the order have been deleted successfully'}, status=200)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+@csrf_exempt
+@require_POST
+def change_order_status(request, order_id):
+    try:
+        order = get_object_or_404(Order, pk=order_id)
+
+        order.order_status = Order.PENDING
+        order.save()
+
+        return JsonResponse({'message': 'Order status updated successfully', 'new_status': Order.PENDING}, status=200)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON data'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
