@@ -17,8 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from BicycleShopProject.view import views
+from drf_spectacular.views import SpectacularAPIView
+
 
 urlpatterns = [
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('admin/', admin.site.urls),
     # path('register/', views.register, name='register'),
     # path('login/', views.user_login, name='login'),

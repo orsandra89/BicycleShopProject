@@ -5,6 +5,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.middleware.csrf import get_token
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 
 from BicycleShopProject.models.models import Product, Order, Customer, OrderItem
 from django.http import JsonResponse
@@ -19,7 +21,8 @@ from datetime import datetime
 # def bicycle_detail(request, id):
 #     bicycle = get_object_or_404(Product, pk=id)
 #     return render(request, {'bicycle': bicycle})
-@require_GET
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def get_bicycle_list(request):
     bicycles = Product.objects.all()
     bicycle_list = []
@@ -33,7 +36,8 @@ def get_bicycle_list(request):
         })
     return JsonResponse({'bicycles': bicycle_list})
 
-@require_GET
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def get_bicycle_by_id(request, bicycle_id):
     try:
         bicycle = Product.objects.get(product_id=bicycle_id)
@@ -48,7 +52,7 @@ def get_bicycle_by_id(request, bicycle_id):
     except Product.DoesNotExist:
         return JsonResponse({'error': 'Bicycle not found'}, status=404)
 
-@require_GET
+@api_view(['GET'])
 def get_order_list_for_customer(request, customer_id):
     try:
         orders = Order.objects.filter(customer_id=customer_id)
@@ -68,7 +72,8 @@ def get_order_list_for_customer(request, customer_id):
     except Order.DoesNotExist:
         return JsonResponse({'error': 'User has no orders'}, status=404)
 
-@require_GET
+# @require_GET
+@api_view(['GET'])
 def customer_order_ids(request, customer_id, order_id):
     try:
         order = Order.objects.get(customer_id=customer_id, order_id=order_id)
@@ -88,8 +93,8 @@ def customer_order_ids(request, customer_id, order_id):
         return JsonResponse({'error': 'Order not found for the user'}, status=404)
 
 
-@csrf_exempt
-@require_POST
+
+@api_view(['POST'])
 def create_order(request, customer_id):
     try:
         customer = get_object_or_404(Customer, customer_id=customer_id)
@@ -115,8 +120,7 @@ def create_order(request, customer_id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
-@csrf_exempt
-@require_POST
+@api_view(['POST'])
 def add_item_to_order(request, order_id, item_id):
     try:
         order = get_object_or_404(Order, order_id=order_id)
@@ -185,8 +189,7 @@ def add_item_to_order(request, order_id, item_id):
 #     else:
 #         return JsonResponse({'error': 'Invalid credentials'}, status=400)
 
-@csrf_exempt
-@require_POST
+@api_view(['POST'])
 def delete_item_from_order(request, order_id, item_id):
     try:
         get_object_or_404(Order, order_id=order_id)
@@ -197,8 +200,7 @@ def delete_item_from_order(request, order_id, item_id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
-@csrf_exempt
-@require_POST
+@api_view(['POST'])
 def delete_all_items_from_order(request, order_id):
     try:
         for order in list(OrderItem.objects.filter(order_id= order_id)):
@@ -208,8 +210,7 @@ def delete_all_items_from_order(request, order_id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
-@csrf_exempt
-@require_POST
+@api_view(['POST'])
 def change_order_status(request, order_id):
     try:
         order = get_object_or_404(Order, pk=order_id)
