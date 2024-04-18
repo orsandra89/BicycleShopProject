@@ -11,6 +11,7 @@ from rest_framework.permissions import AllowAny
 from BicycleShopProject.models.models import Product, Order, Customer, OrderItem, Stock
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET, require_POST
+import logging
 
 from datetime import datetime
 
@@ -21,6 +22,8 @@ from datetime import datetime
 # def bicycle_detail(request, id):
 #     bicycle = get_object_or_404(Product, pk=id)
 #     return render(request, {'bicycle': bicycle})
+
+logger = logging.getLogger(__name__)
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_bicycle_list(request):
@@ -223,12 +226,31 @@ def delete_all_items_from_order(request, order_id):
 def change_order_status(request, order_id):
     try:
         order = get_object_or_404(Order, pk=order_id)
+        order_items = OrderItem.objects.filter(order_id=order)
 
-        order.order_status = Order.PENDING
-        order.save()
+        for order_item in order_items:
+            product = order_item.product_id
+            stock = Stock.objects.get(product_id=product)
+
+            if stock.quantity < order_item.quantity:
+                return JsonResponse(
+                    {'error': 'Insufficient stock quantity for product {}'.format(product.product_name)}, status=400)
+
+            order.order_status = Order.PENDING
+            order.save()
+
+            stock.quantity = stock.quantity - order_item.quantity
+            stock.save()
 
         return JsonResponse({'message': 'Order status updated successfully', 'new_status': Order.PENDING}, status=200)
+
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+    except Order.DoesNotExist:
+        return JsonResponse({'error': 'Order does not exist'}, status=404)
+    except Product.DoesNotExist:
+        return JsonResponse({'error': 'Product does not exist'}, status=404)
+    except Stock.DoesNotExist:
+        return JsonResponse({'error': 'Stock for product does not exist'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
