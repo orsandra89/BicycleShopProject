@@ -8,7 +8,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 
-from BicycleShopProject.models.models import Product, Order, Customer, OrderItem
+from BicycleShopProject.models.models import Product, Order, Customer, OrderItem, Stock
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET, require_POST
 
@@ -137,10 +137,19 @@ def add_item_to_order(request, order_id, item_id):
         # Retrieve the product
         product = get_object_or_404(Product, pk=product_id)
 
+        try:
+            stock = Stock.objects.get(product_id=product)
+            if stock.quantity < quantity:
+                return JsonResponse({'error': 'Insufficient stock quantity'}, status=400)
+        except Stock.DoesNotExist:
+            return JsonResponse({'error': 'Product is out of stock'}, status=400)
+
         # Create the order item
 
         try:
             order_item = OrderItem.objects.get(order_id=order, product_id=product)
+            if stock.quantity < quantity + order_item.quantity:
+                return JsonResponse({'error': 'Insufficient stock quantity'}, status=400)
             order_item.quantity += quantity
             order_item.save(update_fields=['quantity'])
             return JsonResponse({'order_item_id': order_item.order_item_id}, status=201)
