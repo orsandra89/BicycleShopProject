@@ -1,61 +1,67 @@
 import json
 
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.middleware.csrf import get_token
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
 
 from BicycleShopProject.models.models import Product, Order, Customer, OrderItem, Stock
 from django.http import JsonResponse
-from django.views.decorators.http import require_GET, require_POST
 import logging
 
 from datetime import datetime
 
-# def bicycle_list(request):
-#     bicycles = Product.objects.all()
-#     return render(request, {'bicycles': bicycles})
-#
-# def bicycle_detail(request, id):
-#     bicycle = get_object_or_404(Product, pk=id)
-#     return render(request, {'bicycle': bicycle})
 
 logger = logging.getLogger(__name__)
+@csrf_exempt
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_bicycle_list(request):
     bicycles = Product.objects.all()
     bicycle_list = []
     for bicycle in bicycles:
+        stock = Stock.objects.filter(product_id=bicycle).first()
+        default_quantity = 0
+        quantity = stock.quantity if stock else default_quantity
         bicycle_list.append({
             'id': bicycle.product_id,
             'product_name': bicycle.product_name,
             'brand': bicycle.brand_id.brand_name,
             'category': bicycle.category_id.category_name,
-            'price': bicycle.list_price
+            'price': bicycle.list_price,
+            'quantity': quantity
         })
+        # print(Stock.objects.filter(product_id= bicycle).first())
     return JsonResponse({'bicycles': bicycle_list})
+
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
+@csrf_exempt
 def get_bicycle_by_id(request, bicycle_id):
     try:
         bicycle = Product.objects.get(product_id=bicycle_id)
+        stock = Stock.objects.filter(product_id=bicycle).first()
+        default_quantity = 0
+        quantity = stock.quantity if stock else default_quantity
         bicycle_data = {
             'id': bicycle.product_id,
             'product_name': bicycle.product_name,
             'brand': bicycle.brand_id.brand_name,
             'category': bicycle.category_id.category_name,
-            'price': bicycle.list_price
+            'price': bicycle.list_price,
+            'quantity': quantity
         }
         return JsonResponse(bicycle_data)
     except Product.DoesNotExist:
         return JsonResponse({'error': 'Bicycle not found'}, status=404)
 
+
 @api_view(['GET'])
+@csrf_exempt
 def get_order_list_for_customer(request, customer_id):
     try:
         orders = Order.objects.filter(customer_id=customer_id)
@@ -66,17 +72,16 @@ def get_order_list_for_customer(request, customer_id):
                 'customer_name': order.customer_id.first_name,
                 'customer_last_name': order.customer_id.last_name,
                 'order_status': order.order_status,
-                'order_date': order.order_date,
-                'store_name': order.store_id.store_name,
-                'seller_name': order.staff_id.first_name,
-                'seller_last_name': order.staff_id.last_name
+                'order_date': order.order_date
             })
         return JsonResponse({'customer_orders': order_list})
     except Order.DoesNotExist:
         return JsonResponse({'error': 'User has no orders'}, status=404)
 
-# @require_GET
+
+
 @api_view(['GET'])
+@csrf_exempt
 def customer_order_ids(request, customer_id, order_id):
     try:
         order = Order.objects.get(customer_id=customer_id, order_id=order_id)
@@ -98,6 +103,7 @@ def customer_order_ids(request, customer_id, order_id):
 
 
 @api_view(['POST'])
+@csrf_exempt
 def create_order(request, customer_id):
     try:
         customer = get_object_or_404(Customer, customer_id=customer_id)
@@ -123,7 +129,9 @@ def create_order(request, customer_id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
+
 @api_view(['POST'])
+@csrf_exempt
 def add_item_to_order(request, order_id, item_id):
     try:
         order = get_object_or_404(Order, order_id=order_id)
@@ -176,32 +184,9 @@ def add_item_to_order(request, order_id, item_id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
-# @require_POST
-# def register(request):
-#     form = UserCreationForm(request.POST)
-#     if form.is_valid():
-#         form.save(commit=False)
-#         form.cleaned_data['username'] = form.cleaned_data['email']  # Use email as username
-#         form.save()
-#         username = form.cleaned_data.get('email')
-#         raw_password = form.cleaned_data.get('password1')
-#         user = authenticate(username=username, password=raw_password)
-#         login(request, user)
-#         return redirect('home')  # Redirect to the desired page after registration
-#     else:
-#         return JsonResponse({'error': 'Invalid form data'}, status=400)
-#
-# @require_POST
-# def user_login(request):
-#     form = AuthenticationForm(request, request.POST)
-#     if form.is_valid():
-#         user = form.get_user()
-#         login(request, user)
-#         return redirect('home')  # Redirect to the desired page after login
-#     else:
-#         return JsonResponse({'error': 'Invalid credentials'}, status=400)
 
 @api_view(['POST'])
+@csrf_exempt
 def delete_item_from_order(request, order_id, item_id):
     try:
         get_object_or_404(Order, order_id=order_id)
@@ -212,7 +197,9 @@ def delete_item_from_order(request, order_id, item_id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
+
 @api_view(['POST'])
+@csrf_exempt
 def delete_all_items_from_order(request, order_id):
     try:
         for order in list(OrderItem.objects.filter(order_id= order_id)):
@@ -222,7 +209,9 @@ def delete_all_items_from_order(request, order_id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
+
 @api_view(['POST'])
+@csrf_exempt
 def change_order_status(request, order_id):
     try:
         order = get_object_or_404(Order, pk=order_id)
@@ -254,3 +243,58 @@ def change_order_status(request, order_id):
         return JsonResponse({'error': 'Stock for product does not exist'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+
+@api_view(['POST'])
+@csrf_exempt
+def register(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        user = User.objects.create(
+            username=data['username'],
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            email=data['email'],
+            password=make_password(data['password'])
+        )
+        Customer.objects.create(
+            customer_id= user.id,
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            phone=data.get('phone', ''),
+            email=data['email'],
+            street=data.get('street', ''),
+            city=data.get('city', ''),
+            state=data.get('state', ''),
+            zip_code=data.get('zip_code', '')
+        )
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return JsonResponse({'message': 'User and Customer created successfully'}, status=201)
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
+
+@api_view(['POST'])
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+
+            try:
+                Customer.objects.get(customer_id=user.id)
+            except Customer.DoesNotExist:
+                Customer.objects.create(
+                    customer_id=user.id,
+                    first_name=user.first_name,
+                    last_name=user.last_name,
+                    email=user.email
+                )
+
+            return JsonResponse({'message': 'Login successful'}, status=200)
+        else:
+            return JsonResponse({'error': 'Invalid credentials'}, status=401)
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)

@@ -23,8 +23,8 @@ from drf_spectacular.views import SpectacularAPIView
 urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('admin/', admin.site.urls),
-    # path('register/', views.register, name='register'),
-    # path('login/', views.user_login, name='login'),
+    path('register/', views.register, name='register'),
+    path('login/', views.login_view, name='login'),
     path('bicycles/', views.get_bicycle_list, name='bicycle_list'),
     path('bicycles/<int:bicycle_id>/', views.get_bicycle_by_id, name='bicycle_detail'),
     path('customer/<int:customer_id>/orders', views.get_order_list_for_customer, name='order_list'),

@@ -89,11 +89,11 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('POSTGRES_NAME'),
-        'USER': env('POSTGRES_USER'),
-        'PASSWORD': env('POSTGRES_PASSWORD'),
-        'HOST': env('POSTGRES_HOST'),
-        'PORT': env('POSTGRES_PORT'),
+        'NAME': env('POSTGRES_NAME', default='zsbd'),
+        'USER': env('POSTGRES_USER', default='zsbd'),
+        'PASSWORD': env('POSTGRES_PASSWORD', default='zsbd'),
+        'HOST': env('POSTGRES_HOST', default='localhost'),
+        'PORT': env('POSTGRES_PORT', default='5432'),
     }
 }
 
@@ -141,6 +141,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ]
 }
 
 SPECTACULAR_SETTINGS = {
