@@ -1,8 +1,25 @@
 version: "3.9"
 
 services:
+  bicycle:
+    image: bicycle_shop:v0.4
+    container_name: dev-bicycle-${PROJECT_NAME}
+    ports:
+      - 8030:8030
+    environment:
+      - POSTGRES_NAME=zsbd
+      - POSTGRES_USER=zsbd
+      - POSTGRES_PASSWORD=zsbd
+      - POSTGRES_HOST=dev-postgres
+      - POSTGRES_PORT=5432
+    depends_on:
+      - db
+    build:
+      context: ../
+
   db:
     image: postgres
+    hostname: dev-postgres
     container_name: dev-postgres-${PROJECT_NAME}
     environment:
       - POSTGRES_DB=zsbd
@@ -10,8 +27,6 @@ services:
       - POSTGRES_PASSWORD=zsbd
     ports:
       - 5432:5432
-    networks:
-      - internal-network
 
 #  mailhog:
 #    image: mailhog/mailhog
@@ -33,9 +48,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
-      - "5050:80"   
-    networks:
-      - internal-network
+      - "5050:80"
     depends_on:
       - db
 
