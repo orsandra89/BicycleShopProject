@@ -1,14 +1,15 @@
 import json
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import User
+from django.db import transaction
 
-from BicycleShopProject.models.models import Product, Order, Customer, OrderItem, Stock
+from BicycleShopProject.models.models import Product, Order, OrderItem, Stock, User
 from django.http import JsonResponse
 import logging
 
@@ -16,6 +17,8 @@ from datetime import datetime
 
 
 logger = logging.getLogger(__name__)
+
+#TODO transaction
 @csrf_exempt
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -23,18 +26,17 @@ def get_bicycle_list(request):
     bicycles = Product.objects.all()
     bicycle_list = []
     for bicycle in bicycles:
-        stock = Stock.objects.filter(product_id=bicycle).first()
+        stock = Stock.objects.filter(product=bicycle).first()
         default_quantity = 0
         quantity = stock.quantity if stock else default_quantity
         bicycle_list.append({
             'id': bicycle.product_id,
             'product_name': bicycle.product_name,
-            'brand': bicycle.brand_id.brand_name,
-            'category': bicycle.category_id.category_name,
+            'brand': bicycle.brand.brand_name,
+            'category': bicycle.category.category_name,
             'price': bicycle.list_price,
             'quantity': quantity
         })
-        # print(Stock.objects.filter(product_id= bicycle).first())
     return JsonResponse({'bicycles': bicycle_list})
 
 
@@ -44,14 +46,14 @@ def get_bicycle_list(request):
 def get_bicycle_by_id(request, bicycle_id):
     try:
         bicycle = Product.objects.get(product_id=bicycle_id)
-        stock = Stock.objects.filter(product_id=bicycle).first()
+        stock = Stock.objects.filter(product=bicycle).first()
         default_quantity = 0
         quantity = stock.quantity if stock else default_quantity
         bicycle_data = {
             'id': bicycle.product_id,
             'product_name': bicycle.product_name,
-            'brand': bicycle.brand_id.brand_name,
-            'category': bicycle.category_id.category_name,
+            'brand': bicycle.brand.brand_name,
+            'category': bicycle.category.category_name,
             'price': bicycle.list_price,
             'quantity': quantity
         }
@@ -62,15 +64,16 @@ def get_bicycle_by_id(request, bicycle_id):
 
 @api_view(['GET'])
 @csrf_exempt
-def get_order_list_for_customer(request, customer_id):
+def get_order_list_for_customer(request, user_id):
     try:
-        orders = Order.objects.filter(customer_id=customer_id)
+        user = User.objects.get(user_id = user_id)
+        orders = Order.objects.filter(user=user)
         order_list = []
         for order in orders:
             order_list.append({
                 'id': order.order_id,
-                'customer_name': order.customer_id.first_name,
-                'customer_last_name': order.customer_id.last_name,
+                'user_name': order.user.first_name,
+                'usr_last_name': order.user.last_name,
                 'order_status': order.order_status,
                 'order_date': order.order_date
             })
@@ -82,18 +85,18 @@ def get_order_list_for_customer(request, customer_id):
 
 @api_view(['GET'])
 @csrf_exempt
-def customer_order_ids(request, customer_id, order_id):
+def customer_order_ids(request, user_id, order_id):
     try:
-        order = Order.objects.get(customer_id=customer_id, order_id=order_id)
-        items = list(OrderItem.objects.filter(order_id=order_id).values())
+        user = User.objects.get(user_id=user_id)
+        order = Order.objects.get(user=user, order_id=order_id)
+        items = list(OrderItem.objects.filter(order=order).values())
         order_data = {
             'id': order.order_id,
-            'customer_name': order.customer_id.first_name,
-            'customer_last_name': order.customer_id.last_name,
+            'customer_name': order.user.first_name,
+            'customer_last_name': order.user.last_name,
             'order_status': order.order_status,
             'order_date': order.order_date,
             'items': items,
-            'store': order.store_id,
             'seller': order.staff_id
         }
         return JsonResponse(order_data)
@@ -104,26 +107,21 @@ def customer_order_ids(request, customer_id, order_id):
 
 @api_view(['POST'])
 @csrf_exempt
-def create_order(request, customer_id):
+def create_order(request, user_id):
     try:
-        customer = get_object_or_404(Customer, customer_id=customer_id)
-        data = json.loads(request.body)
-        # Retrieve fields from the parsed data
-        order_id = data.get('order_id')
+        user = get_object_or_404(User, user_id=user_id)
+
         state = Order.DRAFT
         n = datetime.now().date()
 
-        # Check if user_id and product_id are provided
-        if not order_id:
-            return JsonResponse({'error': 'User ID, Order ID are required'}, status=400)
+        order = Order.objects.filter(user=user, order_status=state).first()
 
-        # Create the order
-        order = Order.objects.create(
-            customer_id=customer,
-            order_id=order_id,
-            order_status=state,
-            order_date= n
-        )
+        if order is None:
+            order = Order.objects.create(
+                user=user,
+                order_status=state,
+                order_date=n
+            )
 
         return JsonResponse({'order_id': order.order_id}, status=201)
     except Exception as e:
@@ -132,51 +130,54 @@ def create_order(request, customer_id):
 
 @api_view(['POST'])
 @csrf_exempt
-def add_item_to_order(request, order_id, item_id):
+def add_item_to_order(request, order_id):
     try:
         order = get_object_or_404(Order, order_id=order_id)
-        data = json.loads(request.body)
+        if order.order_status is Order.DRAFT:
+            data = json.loads(request.body)
 
-        # Extract fields from the request data
-        product_id = data.get('product_id')
-        quantity = data.get('quantity')
+            # Extract fields from the request data
+            product_id = data.get('product_id')
+            quantity = data.get('quantity')
 
-        # Validate required fields
-        if not all([product_id, quantity]):
-            return JsonResponse({'error': 'Product ID and Quantity are required'}, status=400)
+            # Validate required fields
+            if not all([product_id, quantity]):
+                return JsonResponse({'error': 'Product ID and Quantity are required'}, status=400)
 
-        # Retrieve the product
-        product = get_object_or_404(Product, pk=product_id)
+            # Retrieve the product
+            product = get_object_or_404(Product, pk=product_id)
 
-        try:
-            stock = Stock.objects.get(product_id=product)
-            if stock.quantity < quantity:
-                return JsonResponse({'error': 'Insufficient stock quantity'}, status=400)
-        except Stock.DoesNotExist:
-            return JsonResponse({'error': 'Product is out of stock'}, status=400)
+            try:
+                stock = Stock.objects.get(product=product)
+                if stock.quantity < quantity:
+                    return JsonResponse({'error': 'Insufficient stock quantity'}, status=400)
+            except Stock.DoesNotExist:
+                return JsonResponse({'error': 'Product is out of stock'}, status=400)
 
-        # Create the order item
+            # Create the order item
 
-        try:
-            order_item = OrderItem.objects.get(order_id=order, product_id=product)
-            if stock.quantity < quantity + order_item.quantity:
-                return JsonResponse({'error': 'Insufficient stock quantity'}, status=400)
-            order_item.quantity += quantity
-            order_item.save(update_fields=['quantity'])
+            try:
+                order_item = OrderItem.objects.get(order=order, product=product)
+                if stock.quantity < quantity + order_item.quantity:
+                    return JsonResponse({'error': 'Insufficient stock quantity'}, status=400)
+                order_item.quantity += quantity
+                order_item.save(update_fields=['quantity'])
+                return JsonResponse({'order_item_id': order_item.order_item_id}, status=201)
+
+            except OrderItem.DoesNotExist:
+                order_item = OrderItem.objects.create(
+                    order=order,
+                    product=product,
+                    quantity=quantity,
+                    list_price=product.list_price,
+                    discount=0
+                )
+                return JsonResponse({'order_item_id': order_item.order_item_id}, status=201)
+
+
             return JsonResponse({'order_item_id': order_item.order_item_id}, status=201)
-
-        except OrderItem.DoesNotExist:
-            order_item = OrderItem.objects.create(
-                order_id=order,
-                product_id=product,
-                quantity=quantity,
-                list_price=product.list_price,
-                discount=0
-            )
-            return JsonResponse({'order_item_id': order_item.order_item_id}, status=201)
-
-
-        return JsonResponse({'order_item_id': order_item.order_item_id}, status=201)
+        else:
+            return JsonResponse({'error': 'Order already send to realization'}, status=400)
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON data'}, status=400)
     except Product.DoesNotExist:
@@ -189,11 +190,14 @@ def add_item_to_order(request, order_id, item_id):
 @csrf_exempt
 def delete_item_from_order(request, order_id, item_id):
     try:
-        get_object_or_404(Order, order_id=order_id)
+        order = get_object_or_404(Order, order_id=order_id)
         order_item = get_object_or_404(OrderItem, order_item_id=item_id)
-        order_item.delete()
+        if order.order_status is Order.DRAFT:
+            order_item.delete()
 
-        return JsonResponse({'message': 'Order item deleted successfully'}, status=200)
+            return JsonResponse({'message': 'Order item deleted successfully'}, status=200)
+        else:
+            return JsonResponse({'error': 'Order already send to realization'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
@@ -202,10 +206,15 @@ def delete_item_from_order(request, order_id, item_id):
 @csrf_exempt
 def delete_all_items_from_order(request, order_id):
     try:
-        for order in list(OrderItem.objects.filter(order_id= order_id)):
-            order.delete()
+        order = get_object_or_404(Order, order_id=order_id)
+        if order.order_status is Order.DRAFT:
+            with transaction.atomic():
+                for order in list(OrderItem.objects.filter(order= order)):
+                    order.delete()
 
-        return JsonResponse({'message': 'All items from the order have been deleted successfully'}, status=200)
+            return JsonResponse({'message': 'All items from the order have been deleted successfully'}, status=200)
+        else:
+            return JsonResponse({'error': 'Order already send to realization'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
@@ -215,21 +224,22 @@ def delete_all_items_from_order(request, order_id):
 def change_order_status(request, order_id):
     try:
         order = get_object_or_404(Order, pk=order_id)
-        order_items = OrderItem.objects.filter(order_id=order)
+        order_items = OrderItem.objects.filter(order=order)
 
-        for order_item in order_items:
-            product = order_item.product_id
-            stock = Stock.objects.get(product_id=product)
+        with transaction.atomic():
+            for order_item in order_items:
+                product = order_item.product
+                stock = Stock.objects.get(product=product)
 
-            if stock.quantity < order_item.quantity:
-                return JsonResponse(
-                    {'error': 'Insufficient stock quantity for product {}'.format(product.product_name)}, status=400)
+                if stock.quantity < order_item.quantity:
+                    return JsonResponse(
+                        {'error': 'Insufficient stock quantity for product {}'.format(product.product_name)}, status=400)
 
-            order.order_status = Order.PENDING
-            order.save()
+                order.order_status = Order.PENDING
+                order.save()
 
-            stock.quantity = stock.quantity - order_item.quantity
-            stock.save()
+                stock.quantity = stock.quantity - order_item.quantity
+                stock.save()
 
         return JsonResponse({'message': 'Order status updated successfully', 'new_status': Order.PENDING}, status=200)
 
@@ -250,22 +260,11 @@ def register(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         user = User.objects.create(
-            username=data['username'],
+            username=data['email'],
             first_name=data['first_name'],
             last_name=data['last_name'],
             email=data['email'],
             password=make_password(data['password'])
-        )
-        Customer.objects.create(
-            customer_id= user.id,
-            first_name=data['first_name'],
-            last_name=data['last_name'],
-            phone=data.get('phone', ''),
-            email=data['email'],
-            street=data.get('street', ''),
-            city=data.get('city', ''),
-            state=data.get('state', ''),
-            zip_code=data.get('zip_code', '')
         )
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         return JsonResponse({'message': 'User and Customer created successfully'}, status=201)
@@ -282,16 +281,6 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-
-            try:
-                Customer.objects.get(customer_id=user.id)
-            except Customer.DoesNotExist:
-                Customer.objects.create(
-                    customer_id=user.id,
-                    first_name=user.first_name,
-                    last_name=user.last_name,
-                    email=user.email
-                )
 
             return JsonResponse({'message': 'Login successful'}, status=200)
         else:

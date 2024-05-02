@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from BicycleShopProject.view import views
 from drf_spectacular.views import SpectacularAPIView
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -27,11 +29,11 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('bicycles/', views.get_bicycle_list, name='bicycle_list'),
     path('bicycles/<int:bicycle_id>/', views.get_bicycle_by_id, name='bicycle_detail'),
-    path('customer/<int:customer_id>/orders', views.get_order_list_for_customer, name='order_list'),
-    path('customer/<int:customer_id>/orders/<int:order_id>/', views.customer_order_ids, name='user_order_ids'),
-    path('customer/<int:customer_id>/create_order/', views.create_order, name='create_order'),
-    path('orders/<int:order_id>/add-item/<int:item_id>', views.add_item_to_order, name='add_item_to_order'),
+    path('customer/<int:user_id>/orders', views.get_order_list_for_customer, name='order_list'),
+    path('customer/<int:user_id>/orders/<int:order_id>/', views.customer_order_ids, name='user_order_ids'),
+    path('customer/<int:user_id>/create_order/', views.create_order, name='create_order'),
+    path('orders/<int:order_id>/add-item/', views.add_item_to_order, name='add_item_to_order'),
     path('orders/<int:order_id>/delete-item/<int:item_id>', views.delete_item_from_order, name='delete_item_from_order'),
     path('orders/<int:order_id>/delete-all-items/', views.delete_all_items_from_order, name='delete_all_items_from_order'),
     path('orders/<int:order_id>/finalize-order/', views.change_order_status, name='change_order_status'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
