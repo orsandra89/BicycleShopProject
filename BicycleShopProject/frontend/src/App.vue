@@ -2,16 +2,19 @@
   <v-app>
     <AppNavbar />
     <HelloWorld msg="App" />
+    <Stopka />
   </v-app>
 </template>
 
 <script>
 import AppNavbar from './components/Navbar.vue'
+import Stopka from './components/Stopka.vue'
 
 export default {
   name: 'App',
   components: {
-    AppNavbar
+    AppNavbar,
+    Stopka
   }
 }
 </script>
