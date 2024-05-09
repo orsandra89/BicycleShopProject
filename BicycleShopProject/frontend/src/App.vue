@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <AppNavbar />
-    <HelloWorld msg="App" />
+    <Main />
     <Stopka />
   </v-app>
 </template>
@@ -9,11 +9,13 @@
 <script>
 import AppNavbar from './components/Navbar.vue'
 import Stopka from './components/Stopka.vue'
+import Main from './components/Main.vue'
 
 export default {
   name: 'App',
   components: {
     AppNavbar,
+    Main,
     Stopka
   }
 }
