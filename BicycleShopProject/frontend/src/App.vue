@@ -1,12 +1,18 @@
 <template>
-  <HelloWorld msg="App" />
+  <v-app>
+    <AppNavbar />
+    <HelloWorld msg="App" />
+  </v-app>
 </template>
 
 <script>
+import AppNavbar from './components/Navbar.vue'
 
 export default {
   name: 'App',
-
+  components: {
+    AppNavbar
+  }
 }
 </script>
 
