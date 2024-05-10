@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <div id="app" class="d-flex flex-column min-vh-100">
     <AppNavbar />
-    <Main />
+    <router-view class="flex-grow-1" />
     <Stopka />
   </div>
 </template>
@@ -9,13 +9,11 @@
 <script>
 import AppNavbar from './components/Navbar.vue'
 import Stopka from './components/Stopka.vue'
-import Main from './components/Main.vue'
 
 export default {
   name: 'App',
   components: {
     AppNavbar,
-    Main,
     Stopka
   }
 }

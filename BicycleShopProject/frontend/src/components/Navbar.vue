@@ -6,9 +6,9 @@
             <b-navbar class="mx-auto" style="max-width: 600px;">
                 <b-navbar-brand href="#">Sklep rowerowy</b-navbar-brand>
                 <b-navbar-nav>
-                    <b-nav-item href="/">Strona główna</b-nav-item>
+                    <router-link to="/" class="nav-link">Strona główna</router-link>
                     <b-nav-item href="/sklep">Sklep</b-nav-item>
-                    <b-nav-item href="/kontakt">Kontakt</b-nav-item>
+                    <router-link to="/kontakt" class="nav-link">Kontakt</router-link>
                 </b-navbar-nav>
             </b-navbar>
 
@@ -32,7 +32,8 @@ export default {
 </script>
 
 <style scoped>
-.b-nav-item {
+.b-nav-item,
+.nav-link {
     margin-right: 10px;
 }
 
