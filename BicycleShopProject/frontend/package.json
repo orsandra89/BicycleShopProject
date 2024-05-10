@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@vueuse/head": "^2.0.0",
+    "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "bootstrap-vue-next": "^0.17.6",
     "core-js": "^3.8.3",

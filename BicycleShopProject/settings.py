@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'BicycleShopProject.view',
     'drf_spectacular',
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'BicycleShopProject.urls'
@@ -66,8 +68,7 @@ ROOT_URLCONF = 'BicycleShopProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -172,3 +173,5 @@ LOGGING = {
 }
 
 AUTH_USER_MODEL = 'models.User'
+
+CORS_ALLOW_ALL_ORIGINS = True
