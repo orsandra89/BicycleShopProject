@@ -17,10 +17,12 @@
                     <template #button-content>
                         <em>Użytkownik</em>
                     </template>
-                    <b-dropdown-item href="#">Profil</b-dropdown-item>
+                    <b-dropdown-item href="/profil">Profil</b-dropdown-item>
                     <b-dropdown-item href="#">Wyloguj</b-dropdown-item>
                     <b-dropdown-item href="/rejestracja">Rejestracja</b-dropdown-item>
                     <b-dropdown-item href="/logowanie">Logowanie</b-dropdown-item>
+                    <b-dropdown-item href="/HistoriaZamowien">Historia Zamówień</b-dropdown-item>
+
                 </b-nav-item-dropdown>
             </b-navbar-nav>
         </b-collapse>

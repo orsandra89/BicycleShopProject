@@ -3,12 +3,16 @@ import Main from "./components/Main.vue";
 import About from "./components/About.vue";
 import Registration from "./components/Registration.vue";
 import Login from "./components/Login.vue";
+import UserPanel from "./components/UserPanel.vue";
+
 
 const routes = [
   { path: "/", component: Main },
   { path: "/kontakt", component: About },
   { path: "/rejestracja", component: Registration },
   { path: "/logowanie", component: Login },
+  { path: "/user-panel", component: UserPanel },
+
 ];
 
 const router = createRouter({
