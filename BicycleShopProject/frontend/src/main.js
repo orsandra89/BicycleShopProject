@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import axios from "axios";
 import router from "./router";
 import {
   BNavbar,
@@ -19,6 +20,8 @@ import App from "./App.vue";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue-next/dist/bootstrap-vue-next.css";
+
+axios.defaults.baseURL = "http://localhost:8000";
 
 const app = createApp(App).use(router);
 

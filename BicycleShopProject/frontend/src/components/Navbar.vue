@@ -20,6 +20,7 @@
                     <b-dropdown-item href="#">Profil</b-dropdown-item>
                     <b-dropdown-item href="#">Wyloguj</b-dropdown-item>
                     <b-dropdown-item href="/rejestracja">Rejestracja</b-dropdown-item>
+                    <b-dropdown-item href="/logowanie">Logowanie</b-dropdown-item>
                 </b-nav-item-dropdown>
             </b-navbar-nav>
         </b-collapse>

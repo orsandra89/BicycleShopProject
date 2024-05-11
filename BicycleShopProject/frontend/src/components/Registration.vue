@@ -3,6 +3,12 @@
         <div class="w-25 my-form">
             <h1 class="text-center">Rejestracja</h1>
             <b-form @submit.prevent="onSubmit">
+                <b-form-group label="Imię">
+                    <b-form-input type="text" v-model="form.first_name" required></b-form-input>
+                </b-form-group>
+                <b-form-group label="Nazwisko">
+                    <b-form-input type="text" v-model="form.last_name" required></b-form-input>
+                </b-form-group>
                 <b-form-group label="Email">
                     <b-form-input type="email" v-model="form.email" required></b-form-input>
                 </b-form-group>
@@ -20,22 +26,30 @@
 
 <script>
 import { ref } from 'vue';
+import axios from 'axios';
 
 export default {
     setup() {
         const form = ref({
+            first_name: '',
+            last_name: '',
             email: '',
             password: '',
             passwordConfirm: '',
         });
 
-        const onSubmit = () => {
+        const onSubmit = async () => {
             if (form.value.password !== form.value.passwordConfirm) {
                 alert('Hasła nie są takie same!');
                 return;
             }
 
-            console.log(form.value);
+            try {
+                const response = await axios.post('/register/', form.value);
+                console.log(response.data);
+            } catch (error) {
+                console.error(error);
+            }
         };
 
         return { form, onSubmit };

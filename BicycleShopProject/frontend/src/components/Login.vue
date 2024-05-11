@@ -4,7 +4,7 @@
             <h1 class="text-center">Logowanie</h1>
             <b-form @submit.prevent="onSubmit">
                 <b-form-group label="Email">
-                    <b-form-input type="email" v-model="form.email" required></b-form-input>
+                    <b-form-input type="email" v-model="form.username" required></b-form-input>
                 </b-form-group>
                 <b-form-group label="Hasło">
                     <b-form-input type="password" v-model="form.password" required></b-form-input>
@@ -17,16 +17,22 @@
 
 <script>
 import { ref } from 'vue';
+import axios from 'axios';
 
 export default {
     setup() {
         const form = ref({
-            email: '',
+            username: '',  // zmieniono 'email' na 'username'
             password: '',
         });
 
-        const onSubmit = () => {
-            console.log(form.value);
+        const onSubmit = async () => {
+            try {
+                const response = await axios.post('/login/', form.value);
+                console.log(response.data);
+            } catch (error) {
+                console.error(error);
+            }
         };
 
         return { form, onSubmit };
