@@ -12,6 +12,8 @@ import {
   BButton,
   BNavItemDropdown,
   BDropdownItem,
+  BForm,
+  BFormGroup,
 } from "bootstrap-vue-next";
 import App from "./App.vue";
 
@@ -31,5 +33,7 @@ app.component("BFormInput", BFormInput);
 app.component("BButton", BButton);
 app.component("BNavItemDropdown", BNavItemDropdown);
 app.component("BDropdownItem", BDropdownItem);
+app.component("BForm", BForm);
+app.component("BFormGroup", BFormGroup);
 
 app.mount("#app");
