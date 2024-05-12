@@ -18,6 +18,9 @@
         <option value="Trek">Trek</option>
         <option value="Cube">Cube</option>
         <option value="Fury">Fury</option>
+        <option value="Storm">Storm</option>
+        <option value="Orbea">Orbea</option>
+        <option value="Kross">Kross</option>
       </select>
       <select v-model="filter.color" @change="updateFilters">
         <option value="">Wszystkie kolory</option>
@@ -27,6 +30,8 @@
         <option value="Beżowy">Beżowy</option>
         <option value="Szary">Szary</option>
         <option value="Zielony">Zielony</option>
+        <option value="Czerwony">Czerwony</option>
+        <option value="Miedziany">Miedziany</option>      
       </select>
       <select v-model="filter.purpose" @change="updateFilters">
         <option value="">Wszystkie przeznaczenia</option>
@@ -146,12 +151,91 @@ export default {
         },
         {
           id: 11,
-          image: 'Bike.jpg',
+          image: 'r2.jpg',
           brand: 'Fury',
           color: 'Zielony',
           purpose: 'Górski',
           price: 9999
         },
+        {
+          id: 12,
+          image: 'Bike11.jpg',
+          brand: 'Storm',
+          color: 'Czerwony',
+          purpose: 'Górski',
+          price: 2799
+        },
+        {
+          id: 13,
+          image: 'Bike12.jpg',
+          brand: 'Storm',
+          color: 'Szary',
+          purpose: 'Górski',
+          price: 2999
+        },
+        {
+          id: 14,
+          image: 'Bike13.jpg',
+          brand: 'Trek',
+          color: 'Niebieski',
+          purpose: 'Górski',
+          price: 4799
+        },
+        {
+          id: 15,
+          image: 'Bike14.jpg',
+          brand: 'Ridley',
+          color: 'Miedziany',
+          purpose: 'Kolarski',
+          price: 8999
+        },        {
+          id: 16,
+          image: 'Bike15.jpg',
+          brand: 'Orbea',
+          color: 'Czarny',
+          purpose: 'Górski',
+          price: 7999
+        },
+        {
+          id: 17,
+          image: 'Bike16.jpg',
+          brand: 'Trek',
+          color: 'Czarny',
+          purpose: 'Górski',
+          price: 3599
+        },
+        {
+          id: 18,
+          image: 'Bike17.jpg',
+          brand: 'Kross',
+          color: 'Szary',
+          purpose: 'Górski',
+          price: 3599
+        },
+        {
+          id: 19,
+          image: 'Bike18.jpg',
+          brand: 'Romet',
+          color: 'Czarny',
+          purpose: 'Górski',
+          price: 4999
+        },
+        {
+          id: 20,
+          image: 'Bike19.jpg',
+          brand: 'Folta',
+          color: 'Czarny',
+          purpose: 'Miejski',
+          price: 3999
+        },
+        {
+          id: 21,
+          image: 'Bike20.jpg',
+          brand: 'Kross',
+          color: 'Czarny',
+          purpose: 'Górski',
+          price: 10999
+        }
         ]
       };
     },
