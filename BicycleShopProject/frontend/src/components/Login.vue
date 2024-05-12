@@ -18,18 +18,24 @@
 <script>
 import { ref } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 export default {
     setup() {
         const form = ref({
-            username: '',  // zmieniono 'email' na 'username'
+            username: '',
             password: '',
         });
+        const router = useRouter();
 
         const onSubmit = async () => {
             try {
                 const response = await axios.post('/login/', form.value);
                 console.log(response.data);
+                if (response.data.message === 'Login successful') {
+                    localStorage.setItem('user', JSON.stringify(response.data.username));
+                    router.push({ name: 'Main' }).then(() => window.location.reload());
+                }
             } catch (error) {
                 console.error(error);
             }

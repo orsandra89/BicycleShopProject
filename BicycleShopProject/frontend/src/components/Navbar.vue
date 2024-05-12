@@ -15,14 +15,13 @@
             <b-navbar-nav>
                 <b-nav-item-dropdown right>
                     <template #button-content>
-                        <em>Użytkownik</em>
+                        <em>{{ username }}</em>
                     </template>
-                    <b-dropdown-item href="/profil">Profil</b-dropdown-item>
-                    <b-dropdown-item href="#">Wyloguj</b-dropdown-item>
-                    <b-dropdown-item href="/rejestracja">Rejestracja</b-dropdown-item>
-                    <b-dropdown-item href="/logowanie">Logowanie</b-dropdown-item>
-                    <b-dropdown-item href="/HistoriaZamowien">Historia Zamówień</b-dropdown-item>
-
+                    <b-dropdown-item v-if="isLoggedIn" href="/profil">Profil</b-dropdown-item>
+                    <b-dropdown-item v-if="isLoggedIn" href="/HistoriaZamowien">Historia Zamówień</b-dropdown-item>
+                    <b-dropdown-item v-if="!isLoggedIn" href="/rejestracja">Rejestracja</b-dropdown-item>
+                    <b-dropdown-item v-if="!isLoggedIn" href="/logowanie">Logowanie</b-dropdown-item>
+                    <b-dropdown-item v-if="isLoggedIn" @click="logout">Wyloguj</b-dropdown-item>
                 </b-nav-item-dropdown>
             </b-navbar-nav>
         </b-collapse>
@@ -32,7 +31,28 @@
 <script>
 export default {
     name: 'AppNavbar',
-}
+    data() {
+        return {
+            username: 'Użytkownik',
+            isLoggedIn: false,
+        };
+    },
+    mounted() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user && user !== "undefined") {
+            this.username = user;
+            this.isLoggedIn = true;
+        }
+    },
+    methods: {
+        logout() {
+            localStorage.removeItem('user');
+            this.username = 'Użytkownik';
+            this.isLoggedIn = false;
+            window.location.reload();
+        }
+    }
+};
 </script>
 
 <style scoped>

@@ -18,7 +18,9 @@ from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
-#TODO transaction
+# TODO transaction
+
+
 @csrf_exempt
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -66,7 +68,7 @@ def get_bicycle_by_id(request, bicycle_id):
 @csrf_exempt
 def get_order_list_for_customer(request, user_id):
     try:
-        user = User.objects.get(user_id = user_id)
+        user = User.objects.get(user_id=user_id)
         orders = Order.objects.filter(user=user)
         order_list = []
         for order in orders:
@@ -80,7 +82,6 @@ def get_order_list_for_customer(request, user_id):
         return JsonResponse({'customer_orders': order_list})
     except Order.DoesNotExist:
         return JsonResponse({'error': 'User has no orders'}, status=404)
-
 
 
 @api_view(['GET'])
@@ -102,7 +103,6 @@ def customer_order_ids(request, user_id, order_id):
         return JsonResponse(order_data)
     except Order.DoesNotExist:
         return JsonResponse({'error': 'Order not found for the user'}, status=404)
-
 
 
 @api_view(['POST'])
@@ -157,7 +157,8 @@ def add_item_to_order(request, order_id):
             # Create the order item
 
             try:
-                order_item = OrderItem.objects.get(order=order, product=product)
+                order_item = OrderItem.objects.get(
+                    order=order, product=product)
                 if stock.quantity < quantity + order_item.quantity:
                     return JsonResponse({'error': 'Insufficient stock quantity'}, status=400)
                 order_item.quantity += quantity
@@ -173,7 +174,6 @@ def add_item_to_order(request, order_id):
                     discount=0
                 )
                 return JsonResponse({'order_item_id': order_item.order_item_id}, status=201)
-
 
             return JsonResponse({'order_item_id': order_item.order_item_id}, status=201)
         else:
@@ -209,7 +209,7 @@ def delete_all_items_from_order(request, order_id):
         order = get_object_or_404(Order, order_id=order_id)
         if order.order_status is Order.DRAFT:
             with transaction.atomic():
-                for order in list(OrderItem.objects.filter(order= order)):
+                for order in list(OrderItem.objects.filter(order=order)):
                     order.delete()
 
             return JsonResponse({'message': 'All items from the order have been deleted successfully'}, status=200)
@@ -254,6 +254,7 @@ def change_order_status(request, order_id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
+
 @api_view(['POST'])
 @csrf_exempt
 def register(request):
@@ -271,6 +272,7 @@ def register(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
 
+
 @api_view(['POST'])
 @csrf_exempt
 def login_view(request):
@@ -281,8 +283,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-
-            return JsonResponse({'message': 'Login successful'}, status=200)
+            return JsonResponse({'message': 'Login successful', 'username': user.username}, status=200)
         else:
             return JsonResponse({'error': 'Invalid credentials'}, status=401)
     else:
