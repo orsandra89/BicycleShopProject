@@ -7,8 +7,8 @@
           <input id="name" v-model="user.name" type="text" required>
         </div>
         <div>
-          <label for="surname">Nazwisko:</label>
-          <input id="surname" v-model="user.surname" type="text" required>
+          <label for="surname">E-Mail:</label>
+          <input id="surname" v-model="user.Email" type="text" required>
         </div>
         <div>
           <label for="address">Adres:</label>
@@ -39,7 +39,7 @@
       return {
         user: {
           name: '',
-          surname: '',
+          Email: '',
           address: '',
           postalCode: '',
           phone: '',
@@ -79,19 +79,44 @@
   .user-panel {
     width: 300px;
     margin: auto;
+    background-color: #f8f8f8;
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.1);
+    padding: 30px;
+    font-family: 'Arial', sans-serif;
   }
+  
   .user-panel form div {
-    margin-bottom: 10px;
+    margin-bottom: 25px;
   }
-  .user-panel form button {
+  
+  .user-panel form input {
     width: 100%;
     padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .user-panel form button {
+    width: 100%;
+    padding: 15px;
     background-color: #4CAF50;
     color: white;
     border: none;
     cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
   }
+  
+  .user-panel form button:hover {
+    background-color: #45a049;
+  }
+  
   .error {
     color: red;
+    font-weight: bold;
+    margin-top: 10px;
   }
   </style>

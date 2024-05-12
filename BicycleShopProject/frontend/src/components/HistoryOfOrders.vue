@@ -1,31 +1,42 @@
 <template>
-    <div>
-      <h1>Historia zamówień</h1>
-      <ul>
-        <li v-for="(order, index) in orders" :key="index">
-          Zamówienie #{{ order.id }}: {{ order.item }} - {{ order.quantity }} sztuk
-        </li>
-      </ul>
-    </div>
-  </template>
-  
-  <script>
-  import { ref } from 'vue';
-  
-  export default {
-    name: 'HistoryOfOrders',
-    setup() {
-      const orders = ref([]);
-  
-      const addOrders = (newOrders) => {
-        orders.value = orders.value.concat(newOrders);
-      };
-  
-      this.$emitter.on('checkout', addOrders);
-  
-      return {
-        orders,
-      };
-    },
-  };
-  </script>
+  <div>
+    <h1>Historia zamówień</h1>
+    <ul>
+      <li v-for="(order, index) in orders" :key="index">
+        <p>Marka: {{ order.brand }}</p>
+        <p>Cena: {{ order.price }} zł</p>
+        <p>Data zakupu: {{ order.date }}</p>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'HistoryOfOrders',
+  data() {
+    return {
+      orders: []
+    };
+  },
+  created() {
+    const storedOrders = localStorage.getItem('orders');
+    if (storedOrders) {
+      this.orders = JSON.parse(storedOrders);
+    }
+  },
+};
+</script>
+
+<style scoped>
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+</style>

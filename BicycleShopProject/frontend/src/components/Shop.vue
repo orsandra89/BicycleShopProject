@@ -47,22 +47,22 @@
         <p>{{ bike.color }}</p>
         <p>{{ bike.purpose }}</p>
         <p>{{ bike.price }} zł</p>
-        <button v-if="isLoggedIn" @click="addToCart(bike)">Dodaj do koszyka</button>
-        <p v-else>Aby dodać do koszyka, musisz się najpierw zalogować.</p>
+        <button v-if="!isLoggedIn" @click="addToCart(bike)">Dodaj do koszyka</button>
+    <p v-else>Aby dodać do koszyka, musisz się najpierw zalogować.</p>
       </div>
     </div>
   </div>
 </template>
   
 <script>
+
+
+
 export default {
   name: 'sklep',
-  isLoggedIn: false,
-  created() { 
-    console.log('Shop component loaded');
-  },
   data() {
     return {
+      cart: [], 
       sort: '',
       filter: {
         brand: '',
@@ -260,12 +260,19 @@ export default {
     }
   },
   methods: {
-    addToCart(bike) {
-      this.cart.push(bike);
-      console.log(this.cart);
+  addToCart(bike) {
+    this.cart.push(bike);
+    localStorage.setItem('cart', JSON.stringify(this.cart));
+  },
+    logIn() { 
+      this.isLoggedIn = true;
     },
-  }
+    logOut() { 
+      this.isLoggedIn = false;
+    },
+  },
 };
+
 </script>
 
 <style scoped>
