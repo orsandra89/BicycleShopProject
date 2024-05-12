@@ -17,6 +17,7 @@
         <option value="Ortega">Ortega</option>
         <option value="Trek">Trek</option>
         <option value="Cube">Cube</option>
+        <option value="Fury">Fury</option>
       </select>
       <select v-model="filter.color" @change="updateFilters">
         <option value="">Wszystkie kolory</option>
@@ -25,6 +26,7 @@
         <option value="Niebieski">Niebieski</option>
         <option value="Beżowy">Beżowy</option>
         <option value="Szary">Szary</option>
+        <option value="Zielony">Zielony</option>
       </select>
       <select v-model="filter.purpose" @change="updateFilters">
         <option value="">Wszystkie przeznaczenia</option>
@@ -141,7 +143,15 @@ export default {
           color: 'Szary',
           purpose: 'Górski',
           price: 4999
-        }
+        },
+        {
+          id: 11,
+          image: 'Bike.jpg',
+          brand: 'Fury',
+          color: 'Zielony',
+          purpose: 'Górski',
+          price: 9999
+        },
         ]
       };
     },
