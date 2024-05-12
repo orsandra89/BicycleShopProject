@@ -16,6 +16,9 @@
   <script>
   export default {
     name: 'sklep',
+    created() {
+    console.log('Shop component loaded');
+  },
     data() {
       return {
         bikes: [

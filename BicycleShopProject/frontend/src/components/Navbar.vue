@@ -9,6 +9,8 @@
                     <router-link to="/" class="nav-link">Strona główna</router-link>
                     <router-link to="/sklep" class="nav-link">Sklep</router-link >
                     <router-link to="/kontakt" class="nav-link">Kontakt</router-link>
+                    <router-link to="/koszyk" class="nav-link" v-if="isLoggedIn">Koszyk</router-link>
+
                 </b-navbar-nav>
             </b-navbar>
 
@@ -33,7 +35,7 @@ export default {
     name: 'AppNavbar',
     data() {
         return {
-            username: 'Użytkownik',
+            username: 'Zaloguj się',
             isLoggedIn: false,
         };
     },
@@ -47,7 +49,7 @@ export default {
     methods: {
         logout() {
             localStorage.removeItem('user');
-            this.username = 'Użytkownik';
+            this.username = 'Zaloguj się';
             this.isLoggedIn = false;
             window.location.reload();
         }
