@@ -2,7 +2,7 @@
   <div class="container">
     <header>
       <h1>Witaj w Sklepie Rowerowym</h1>
-      <p>Znajdź idealnych pedałów dla siebie</p>
+      <p>Znajdź idealny rower dla siebie</p>
     </header>
     <b-carousel id="carousel-1" :interval="4000" controls indicators background="#ababab" class="custom-carousel">
       <b-carousel-slide :img-src="bikeImages[0]">
@@ -18,6 +18,15 @@
         </div>
       </b-carousel-slide>
     </b-carousel>
+    <div class="about-us">
+      <h2>O naszym sklepie</h2>
+      <p>
+        Nasz sklep rowerowy jest znany z szerokiej gamy wysokiej jakości rowerów. 
+        Niezależnie od tego, czy jesteś profesjonalnym kolarzem, czy też szukasz roweru do codziennego użytku, 
+        mamy coś dla Ciebie. Jesteśmy dumni z naszego poziomu obsługi klienta i jesteśmy zawsze gotowi pomóc Ci 
+        znaleźć idealny rower.
+      </p>
+    </div>
     <div class="row">
       <div class="col-md-4" v-for="bike in bikes" :key="bike.id">
         <div class="card">
@@ -48,29 +57,6 @@ export default {
   },
   data() {
     return {
-      bikes: [
-        {
-          id: 1,
-          name: 'Rower górski',
-          description: 'Idealny rower do jazdy w trudnym terenie.',
-          price: 1500,
-          image: 'https://via.placeholder.com/300'
-        },
-        {
-          id: 2,
-          name: 'Rower szosowy',
-          description: 'Przeznaczony do szybkiej jazdy po asfalcie.',
-          price: 2000,
-          image: 'https://via.placeholder.com/300'
-        },
-        {
-          id: 3,
-          name: 'Rower miejski',
-          description: 'Wygodny i praktyczny rower na co dzień.',
-          price: 1200,
-          image: 'https://via.placeholder.com/300'
-        }
-      ],
       bikeImages: [bike1, bike2, bike3]
     };
   }
@@ -100,5 +86,9 @@ export default {
   height: 100%;
   object-fit: contain;
   object-position: center;
+}
+.about-us {
+  text-align: center;
+  margin: 20px 0;
 }
 </style>
