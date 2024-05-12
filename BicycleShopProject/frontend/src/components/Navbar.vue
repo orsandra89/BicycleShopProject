@@ -7,7 +7,7 @@
                 <b-navbar-brand href="#">Sklep rowerowy</b-navbar-brand>
                 <b-navbar-nav>
                     <router-link to="/" class="nav-link">Strona główna</router-link>
-                    <b-nav-item href="/sklep">Sklep</b-nav-item>
+                    <router-link to="/sklep" class="nav-link">Sklep</router-link >
                     <router-link to="/kontakt" class="nav-link">Kontakt</router-link>
                 </b-navbar-nav>
             </b-navbar>

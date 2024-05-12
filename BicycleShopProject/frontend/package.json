@@ -8,7 +8,6 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@vue/cli": "^5.0.8",
     "@vueuse/head": "^2.0.0",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
@@ -20,6 +19,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli": "^5.0.8",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
