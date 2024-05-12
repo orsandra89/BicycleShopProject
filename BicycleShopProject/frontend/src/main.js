@@ -23,6 +23,13 @@ import {
   BCarousel,
   BCarouselSlide,
 } from "bootstrap-vue-next";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faBasketShopping,
+  faCircleUser,
+  faBicycle,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import App from "./App.vue";
 
 import "bootstrap/dist/css/bootstrap.css";
@@ -52,5 +59,11 @@ app.component("BAlert", BAlert);
 app.component("BSpinner", BSpinner);
 app.component("BCarousel", BCarousel);
 app.component("BCarouselSlide", BCarouselSlide);
+
+library.add(faBasketShopping);
+library.add(faCircleUser);
+library.add(faBicycle);
+
+app.component("font-awesome-icon", FontAwesomeIcon);
 
 app.mount("#app");

@@ -4,25 +4,31 @@
 
         <b-collapse id="nav-collapse" is-nav>
             <b-navbar class="mx-auto" style="max-width: 600px;">
-                <b-navbar-brand href="#">Sklep rowerowy</b-navbar-brand>
+                <b-navbar-brand href="#" class="fw-bold"><font-awesome-icon :icon="['fas', 'bicycle']"
+                        class="me-1" />SKLEP ROWEROWY</b-navbar-brand>
                 <b-navbar-nav>
                     <router-link to="/" class="nav-link">Strona główna</router-link>
-                    <router-link to="/sklep" class="nav-link">Sklep</router-link >
+                    <router-link to="/sklep" class="nav-link">Sklep</router-link>
                     <router-link to="/kontakt" class="nav-link">Kontakt</router-link>
-                    <router-link to="/koszyk" class="nav-link" v-if="isLoggedIn">Koszyk</router-link>
-
                 </b-navbar-nav>
             </b-navbar>
 
             <b-navbar-nav>
+                <router-link to="/koszyk" class="nav-link" v-if="isLoggedIn">
+                    <font-awesome-icon :icon="['fas', 'shopping-basket']" class="me-1" />
+                    Koszyk
+                </router-link>
+
                 <b-nav-item-dropdown right>
                     <template #button-content>
-                        <em>{{ username }}</em>
+                        <font-awesome-icon :icon="['fas', 'circle-user']" class="me-1" v-if="isLoggedIn" />
+                        {{ username }}
                     </template>
-                    <b-dropdown-item v-if="isLoggedIn" href="/profil">Profil</b-dropdown-item>
-                    <b-dropdown-item v-if="isLoggedIn" href="/HistoriaZamowien">Historia Zamówień</b-dropdown-item>
-                    <b-dropdown-item v-if="!isLoggedIn" href="/rejestracja">Rejestracja</b-dropdown-item>
-                    <b-dropdown-item v-if="!isLoggedIn" href="/logowanie">Logowanie</b-dropdown-item>
+                    <router-link v-if="isLoggedIn" to="/user-panel" class="dropdown-item">Profil</router-link>
+                    <router-link v-if="isLoggedIn" to="/order-history" class="dropdown-item">Historia
+                        Zamówień</router-link>
+                    <router-link v-if="!isLoggedIn" to="/rejestracja" class="dropdown-item">Rejestracja</router-link>
+                    <router-link v-if="!isLoggedIn" to="/logowanie" class="dropdown-item">Logowanie</router-link>
                     <b-dropdown-item v-if="isLoggedIn" @click="logout">Wyloguj</b-dropdown-item>
                 </b-nav-item-dropdown>
             </b-navbar-nav>
