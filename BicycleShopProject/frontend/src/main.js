@@ -15,6 +15,13 @@ import {
   BDropdownItem,
   BForm,
   BFormGroup,
+  BContainer,
+  BRow,
+  BCol,
+  BAlert,
+  BSpinner,
+  BCarousel,
+  BCarouselSlide,
 } from "bootstrap-vue-next";
 import App from "./App.vue";
 
@@ -38,5 +45,12 @@ app.component("BNavItemDropdown", BNavItemDropdown);
 app.component("BDropdownItem", BDropdownItem);
 app.component("BForm", BForm);
 app.component("BFormGroup", BFormGroup);
+app.component("BContainer", BContainer);
+app.component("BRow", BRow);
+app.component("BCol", BCol);
+app.component("BAlert", BAlert);
+app.component("BSpinner", BSpinner);
+app.component("BCarousel", BCarousel);
+app.component("BCarouselSlide", BCarouselSlide);
 
 app.mount("#app");
