@@ -1,245 +1,72 @@
 <template>
-  <div class="shop">
-    <div class="filters">
-      <select v-model="sort" @change="updateSort">
+  <b-container class="shop">
+    <div class="d-flex justify-content-between mb-3">
+      <b-form-select v-model="sort" class="p-2 rounded border shadow-sm">
         <option value="">Sortuj wg ceny</option>
         <option value="asc">Rosnąco</option>
         <option value="desc">Malejąco</option>
-      </select>
-      <select v-model="filter.brand" @change="updateFilters">
+      </b-form-select>
+      <b-form-select v-model="filter.brand" class="p-2 rounded border shadow-sm">
         <option value="">Wszystkie marki</option>
-        <option value="Romet">Romet</option>
-        <option value="Bianchi">Bianchi</option>
-        <option value="Unibike">Unibike</option>
-        <option value="Folta">Folta</option>
-        <option value="Overfly">Overfly</option>
-        <option value="Ridley">Ridley</option>
-        <option value="Ortega">Ortega</option>
-        <option value="Trek">Trek</option>
-        <option value="Cube">Cube</option>
-        <option value="Fury">Fury</option>
-        <option value="Storm">Storm</option>
-        <option value="Orbea">Orbea</option>
-        <option value="Kross">Kross</option>
-      </select>
-      <select v-model="filter.color" @change="updateFilters">
-        <option value="">Wszystkie kolory</option>
-        <option value="Czarny">Czarny</option>
-        <option value="Biały">Biały</option>
-        <option value="Niebieski">Niebieski</option>
-        <option value="Beżowy">Beżowy</option>
-        <option value="Szary">Szary</option>
-        <option value="Zielony">Zielony</option>
-        <option value="Czerwony">Czerwony</option>
-        <option value="Miedziany">Miedziany</option>      
-      </select>
-      <select v-model="filter.purpose" @change="updateFilters">
+        <option v-for="brand in brands" :key="brand" :value="brand">{{ brand }}</option>
+      </b-form-select>
+      <b-form-select v-model="filter.category" class="p-2 rounded border shadow-sm">
         <option value="">Wszystkie przeznaczenia</option>
-        <option value="Górski">Górski</option>
-        <option value="Kolarski">Kolarski</option>
-        <option value="Miejski">Miejski</option>
-      </select>
+        <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
+      </b-form-select>
     </div>
-    <div class="product-grid">
-      <div class="product-card" v-for="bike in filteredBikes" :key="bike.id">
-        <img :src="require(`@/assets/images/BikesShop/${bike.image}`)" alt="bike image" />
+    <b-row class="mt-3">
+      <b-col lg="3" md="6" sm="12" class="mb-3 bg-white rounded shadow-sm" v-for="bike in filteredBikes" :key="bike.id">
+        <b-img fluid :src="require('@/assets/images/BikesShop/bike-placeholder.png')" alt="default image" />
         <h2>{{ bike.brand }}</h2>
         <p>{{ bike.color }}</p>
-        <p>{{ bike.purpose }}</p>
+        <p>{{ bike.category }}</p>
         <p>{{ bike.price }} zł</p>
-        <button v-if="!isLoggedIn" @click="addToCart(bike)">Dodaj do koszyka</button>
-    <p v-else>Aby dodać do koszyka, musisz się najpierw zalogować.</p>
-      </div>
-    </div>
-  </div>
+        <b-button v-if="!isLoggedIn" @click="addToCart(bike)" variant="primary">Dodaj do koszyka</b-button>
+        <p v-else>Aby dodać do koszyka, musisz się najpierw zalogować.</p>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
-  
+
 <script>
-
-
+import axios from 'axios';
 
 export default {
   name: 'sklep',
   data() {
     return {
-      cart: [], 
+      cart: [],
       sort: '',
       filter: {
         brand: '',
         color: '',
-        purpose: ''
+        category: ''
       },
-        bikes: [
-        {
-          id: 1,
-          image: 'Bike1.jpg',
-          brand: 'Romet',
-          color: 'Czarny',
-          purpose: 'Górski',
-          price: 2899
-        },
-        {
-          id: 2,
-          image: 'Bike2.jpg',
-          brand: 'Bianchi',
-          color: 'Niebieski',
-          purpose: 'Kolarski',
-          price: 7999
-        },
-        {
-          id: 3,
-          image: 'Bike3.jpg',
-          brand: 'Romet',
-          color: 'Biały',
-          purpose: 'Górski',
-          price: 2399
-        },
-        {
-          id: 4,
-          image: 'Bike4.jpg',
-          brand: 'Unibike',
-          color: 'Czarny',
-          purpose: 'Miejski',
-          price: 1999
-        },        {
-          id: 5,
-          image: 'Bike5.jpg',
-          brand: 'Folta',
-          color: 'Czarny',
-          purpose: 'Górski',
-          price: 4999
-        },
-        {
-          id: 6,
-          image: 'Bike6.jpg',
-          brand: 'Overfly',
-          color: 'Beżowy',
-          purpose: 'Miejski',
-          price: 3599
-        },
-        {
-          id: 7,
-          image: 'Bike7.jpg',
-          brand: 'Ridley',
-          color: 'Czarny',
-          purpose: 'Górski',
-          price: 5999
-        },
-        {
-          id: 8,
-          image: 'Bike8.jpg',
-          brand: 'Trek',
-          color: 'Niebieski',
-          purpose: 'Górski',
-          price: 6999
-        },
-        {
-          id: 9,
-          image: 'Bike9.jpg',
-          brand: 'Ortega',
-          color: 'Biały',
-          purpose: 'Górski',
-          price: 3999
-        },
-        {
-          id: 10,
-          image: 'Bike10.jpg',
-          brand: 'Cube',
-          color: 'Szary',
-          purpose: 'Górski',
-          price: 4999
-        },
-        {
-          id: 11,
-          image: 'r2.jpg',
-          brand: 'Fury',
-          color: 'Zielony',
-          purpose: 'Górski',
-          price: 9999
-        },
-        {
-          id: 12,
-          image: 'Bike11.jpg',
-          brand: 'Storm',
-          color: 'Czerwony',
-          purpose: 'Górski',
-          price: 2799
-        },
-        {
-          id: 13,
-          image: 'Bike12.jpg',
-          brand: 'Storm',
-          color: 'Szary',
-          purpose: 'Górski',
-          price: 2999
-        },
-        {
-          id: 14,
-          image: 'Bike13.jpg',
-          brand: 'Trek',
-          color: 'Niebieski',
-          purpose: 'Górski',
-          price: 4799
-        },
-        {
-          id: 15,
-          image: 'Bike14.jpg',
-          brand: 'Ridley',
-          color: 'Miedziany',
-          purpose: 'Kolarski',
-          price: 8999
-        },        {
-          id: 16,
-          image: 'Bike15.jpg',
-          brand: 'Orbea',
-          color: 'Czarny',
-          purpose: 'Górski',
-          price: 7999
-        },
-        {
-          id: 17,
-          image: 'Bike16.jpg',
-          brand: 'Trek',
-          color: 'Czarny',
-          purpose: 'Górski',
-          price: 3599
-        },
-        {
-          id: 18,
-          image: 'Bike17.jpg',
-          brand: 'Kross',
-          color: 'Szary',
-          purpose: 'Górski',
-          price: 3599
-        },
-        {
-          id: 19,
-          image: 'Bike18.jpg',
-          brand: 'Romet',
-          color: 'Czarny',
-          purpose: 'Górski',
-          price: 4999
-        },
-        {
-          id: 20,
-          image: 'Bike19.jpg',
-          brand: 'Folta',
-          color: 'Czarny',
-          purpose: 'Miejski',
-          price: 3999
-        },
-        {
-          id: 21,
-          image: 'Bike20.jpg',
-          brand: 'Kross',
-          color: 'Czarny',
-          purpose: 'Górski',
-          price: 10999
-        }
-        ]
-      };
-    },
-    computed: {
+      bikes: [],
+      brands: [],
+      categories: [],
+      isLoggedIn: false,
+    };
+  },
+  async created() {
+    try {
+      const response = await axios.get('http://localhost:8000/bicycles/');
+      this.bikes = response.data.bicycles;
+      console.log(this.bikes);
+
+      this.brands = this.bikes
+        .map(bike => bike.brand)
+        .filter((brand, index, self) => self.indexOf(brand) === index);
+
+      this.categories = this.bikes
+        .map(bike => bike.category)
+        .filter((category, index, self) => self.indexOf(category) === index);
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  computed: {
     filteredBikes() {
       let bikes = this.bikes;
       if (this.sort === 'asc') {
@@ -253,78 +80,25 @@ export default {
       if (this.filter.color) {
         bikes = bikes.filter(bike => bike.color === this.filter.color);
       }
-      if (this.filter.purpose) {
-        bikes = bikes.filter(bike => bike.purpose === this.filter.purpose);
+      if (this.filter.category) {
+        bikes = bikes.filter(bike => bike.category === this.filter.category);
       }
       return bikes;
     }
   },
   methods: {
-  addToCart(bike) {
-    this.cart.push(bike);
-    localStorage.setItem('cart', JSON.stringify(this.cart));
-  },
-    logIn() { 
+    addToCart(bike) {
+      this.cart.push(bike);
+      localStorage.setItem('cart', JSON.stringify(this.cart));
+    },
+    logIn() {
       this.isLoggedIn = true;
     },
-    logOut() { 
+    logOut() {
       this.isLoggedIn = false;
     },
   },
 };
-
 </script>
 
-<style scoped>
-.filters {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.filters select {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  font-size: 16px;
-}
-.product-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.product-card {
-  flex: 0 0 calc(33.33% - 20px);
-  background-color: #fff;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.product-card img {
-  width: 100%;
-  height: auto;
-}
-
-.product-card h2, .product-card p {
-  margin: 0 0 10px;
-}
-
-.product-card button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007BFF;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.product-card button:hover {
-  background-color: #0056b3;
-}
-</style>
+<style scoped></style>
