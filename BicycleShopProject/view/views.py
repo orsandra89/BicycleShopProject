@@ -282,9 +282,13 @@ def login_view(request):
         password = data.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return JsonResponse({'message': 'Login successful', 'username': user.username}, status=200)
+            login(request, user)
+            return JsonResponse({
+                'message': 'User logged in successfully',
+                'is_superuser': user.is_superuser,
+                'username': user.username
+            }, status=200)
         else:
-            return JsonResponse({'error': 'Invalid credentials'}, status=401)
+            return JsonResponse({'error': 'Invalid login credentials'}, status=400)
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
