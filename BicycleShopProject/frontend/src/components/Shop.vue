@@ -324,11 +324,555 @@ export default {
           color: 'Zielony',
           category: 'Górski',
           price: 8799
-        }
+        },
+        {
+          id: 36,
+          image: "Bike13.jpg",
+          brand: "Giant",
+          color: "Czarny",
+          category: "Górski",
+          price: 7899
+        },
+        {
+          id: 37,
+          image: "Bike14.jpg",
+          brand: "Trek",
+          color: "Niebieski",
+          category: "Górski",
+          price: 6199
+        },
+        {
+          id: 38,
+          image: "Bike17.jpg",
+          brand: "Scott",
+          color: "Czerwony",
+          category: "Kolarski",
+          price: 9299
+        },
+        {
+          id: 39,
+          image: "Bike15.jpg",
+          brand: "Cannondale",
+          color: "Biały",
+          category: "Terenowy",
+          price: 7999
+        },
+        {
+          id: 40,
+          image: "Bike16.jpg",
+          brand: "Specialized",
+          color: "Zielony",
+          category: "Górski",
+          price: 6499
+        },
+        {
+          id: 41,
+          image: "Bike20.jpg",
+          brand: "Cube",
+          color: "Szary",
+          category: "Kolarski",
+          price: 7499
+        },
+        {
+          id: 42,
+          image: "Bike19.jpg",
+          brand: "Merida",
+          color: "Czarny",
+          category: "Górski",
+          price: 8299
+        },
+        {
+          id: 43,
+          image: "Bike18.jpg",
+          brand: "Giant",
+          color: "Pomarańczowy",
+          category: "Szosowy",
+          price: 8899
+        },
+        {
+          id: 44,
+          image: "Bike20.jpg",
+          brand: "Trek",
+          color: "Czarny",
+          category: "Terenowy",
+          price: 6799
+        },
+        {
+          id: 45,
+          image: "Bike17.jpg",
+          brand: "Scott",
+          color: "Czerwony",
+          category: "Kolarski",
+          price: 9999
+        },
+        {
+          id: 46,
+          image: "Bike14.jpg",
+          brand: "Cannondale",
+          color: "Biały",
+          category: "Górski",
+          price: 7499
+        },
+        {
+          id: 47,
+          image: "Bike13.jpg",
+          brand: "Specialized",
+          color: "Zielony",
+          category: "Miejski",
+          price: 5299
+        },
+        {
+          id: 48,
+          image: "Bike16.jpg",
+          brand: "Giant",
+          color: "Czarny",
+          category: "Górski",
+          price: 7899
+        },
+        {
+          id: 49,
+          image: "Bike15.jpg",
+          brand: "Trek",
+          color: "Niebieski",
+          category: "Górski",
+          price: 6199
+        },
+        {
+          id: 50,
+          image: "Bike18.jpg",
+          brand: "Scott",
+          color: "Czerwony",
+          category: "Kolarski",
+          price: 9299
+        },
+        {
+          id: 51,
+          image: "Bike14.jpg",
+          brand: "Cannondale",
+          color: "Biały",
+          category: "Terenowy",
+          price: 7999
+        },
+        {
+          id: 52,
+          image: "Bike13.jpg",
+          brand: "Specialized",
+          color: "Zielony",
+          category: "Górski",
+          price: 6499
+        },
+        {
+          id: 53,
+          image: "Bike20.jpg",
+          brand: "Cube",
+          color: "Szary",
+          category: "Kolarski",
+          price: 7499
+        },
+        {
+          id: 54,
+          image: "Bike19.jpg",
+          brand: "Merida",
+          color: "Czarny",
+          category: "Górski",
+          price: 8299
+        },
+        {
+          id: 55,
+          image: "Bike18.jpg",
+          brand: "Giant",
+          color: "Pomarańczowy",
+          category: "Szosowy",
+          price: 8899
+        },
+        {
+          id: 56,
+          image: "Bike20.jpg",
+          brand: "Trek",
+          color: "Czarny",
+          category: "Terenowy",
+          price: 6799
+        },
+        {
+          id: 57,
+          image: "Bike17.jpg",
+          brand: "Scott",
+          color: "Czerwony",
+          category: "Kolarski",
+          price: 9999
+        },
+        {
+          id: 58,
+          image: "Bike14.jpg",
+          brand: "Cannondale",
+          color: "Biały",
+          category: "Górski",
+          price: 7499
+        },
+        {
+          id: 59,
+          image: "Bike13.jpg",
+          brand: "Specialized",
+          color: "Zielony",
+          category: "Miejski",
+          price: 5299
+        },
+        {
+          id: 60,
+          image: "Bike16.jpg",
+          brand: "Giant",
+          color: "Czarny",
+          category: "Górski",
+          price: 7899
+        },
+        {
+          id: 61,
+          image: "Bike15.jpg",
+          brand: "Trek",
+          color: "Niebieski",
+          category: "Górski",
+          price: 6199
+        },
+        {
+          id: 62,
+          image: "Bike18.jpg",
+          brand: "Scott",
+          color: "Czerwony",
+          category: "Kolarski",
+          price: 9299
+        },
+        {
+          id: 63,
+          image: "Bike14.jpg",
+          brand: "Cannondale",
+          color: "Biały",
+          category: "Terenowy",
+          price: 7999
+        },
+        {
+          id: 64,
+          image: "Bike13.jpg",
+          brand: "Specialized",
+          color: "Zielony",
+          category: "Górski",
+          price: 6499
+        },
+        {
+          id: 65,
+          image: "Bike20.jpg",
+          brand: "Cube",
+          color: "Szary",
+          category: "Kolarski",
+          price: 7499
+        },
+        {
+          id: 66,
+          image: "Bike19.jpg",
+          brand: "Merida",
+          color: "Czarny",
+          category: "Górski",
+          price: 8299
+        },
+        {
+          id: 67,
+          image: "Bike18.jpg",
+          brand: "Giant",
+          color: "Pomarańczowy",
+          category: "Szosowy",
+          price: 8899
+        },
+        {
+          id: 68,
+          image: "Bike20.jpg",
+          brand: "Trek",
+          color: "Czarny",
+          category: "Terenowy",
+          price: 6799
+        },
+        {
+          id: 69,
+          image: "Bike17.jpg",
+          brand: "Scott",
+          color: "Czerwony",
+          category: "Kolarski",
+          price: 9999
+        },
+        {
+          id: 70,
+          image: "Bike14.jpg",
+          brand: "Cannondale",
+          color: "Biały",
+          category: "Górski",
+          price: 7499
+        },
+        {
+          id: 71,
+          image: "Bike13.jpg",
+          brand: "Specialized",
+          color: "Zielony",
+          category: "Miejski",
+          price: 5299
+        },
+        {
+          id: 72,
+          image: "Bike16.jpg",
+          brand: "Giant",
+          color: "Czarny",
+          category: "Górski",
+          price: 7899
+        },
+        {
+          id: 73,
+          image: "Bike15.jpg",
+          brand: "Trek",
+          color: "Niebieski",
+          category: "Górski",
+          price: 6199
+        },
+        {
+          id: 74,
+          image: "Bike18.jpg",
+          brand: "Scott",
+          color: "Czerwony",
+          category: "Kolarski",
+          price: 9299
+        },
+        {
+          id: 75,
+          image: "Bike14.jpg",
+          brand: "Cannondale",
+          color: "Biały",
+          category: "Terenowy",
+          price: 7999
+        },
+        {
+          id: 76,
+          image: "Bike13.jpg",
+          brand: "Specialized",
+          color: "Zielony",
+          category: "Górski",
+          price: 6499
+        },
+        {
+          id: 77,
+          image: "Bike20.jpg",
+          brand: "Cube",
+          color: "Szary",
+          category: "Kolarski",
+          price: 7499
+        },
+        {
+          id: 78,
+          image: "Bike19.jpg",
+          brand: "Merida",
+          color: "Czarny",
+          category: "Górski",
+          price: 8299
+        },
+        {
+          id: 79,
+          image: "Bike18.jpg",
+          brand: "Giant",
+          color: "Pomarańczowy",
+          category: "Szosowy",
+          price: 8899
+        },
+        {
+          id: 80,
+          image: "Bike20.jpg",
+          brand: "Trek",
+          color: "Czarny",
+          category: "Terenowy",
+          price: 6799
+        },
+        {
+          id: 81,
+          image: "Bike17.jpg",
+          brand: "Scott",
+          color: "Czerwony",
+          category: "Kolarski",
+          price: 9999
+        },
+        {
+          id: 82,
+          image: "Bike14.jpg",
+          brand: "Cannondale",
+          color: "Biały",
+          category: "Górski",
+          price: 7499
+        },
+        {
+          id: 83,
+          image: "Bike13.jpg",
+          brand: "Specialized",
+          color: "Zielony",
+          category: "Miejski",
+          price: 5299
+        },
+        {
+          id: 84,
+          image: "Bike16.jpg",
 
 
 
 
+          brand: "Giant",
+          color: "Czarny",
+          category: "Górski",
+          price: 7899
+        },
+
+
+
+
+        {
+          id: 85,
+          image: "Bike15.jpg",
+          brand: "Trek",
+          color: "Niebieski",
+          category: "Górski",
+          price: 6199
+        },
+        {
+          id: 86,
+          image: "Bike18.jpg",
+          brand: "Scott",
+          color: "Czerwony",
+          category: "Kolarski",
+          price: 9299
+        },
+        {
+          id: 87,
+          image: "Bike14.jpg",
+          brand: "Cannondale",
+          color: "Biały",
+          category: "Terenowy",
+          price: 7999
+        },
+        {
+          id: 88,
+          image: "Bike13.jpg",
+          brand: "Specialized",
+          color: "Zielony",
+          category: "Górski",
+          price: 6499
+        },
+        {
+          id: 89,
+          image: "Bike20.jpg",
+          brand: "Cube",
+          color: "Szary",
+          category: "Kolarski",
+          price: 7499
+        },
+        {
+          id: 90,
+          image: "Bike19.jpg",
+          brand: "Merida",
+          color: "Czarny",
+          category: "Górski",
+          price: 8299
+        },
+        {
+          id: 91,
+          image: "Bike18.jpg",
+          brand: "Giant",
+          color: "Pomarańczowy",
+          category: "Szosowy",
+          price: 8899
+        },
+
+
+
+
+
+
+        {
+          id: 92,
+          image: "Bike20.jpg",
+          brand: "Trek",
+          color: "Czarny",
+          category: "Terenowy",
+          price: 6799
+        },
+        {
+          id: 93,
+          image: "Bike17.jpg",
+          brand: "Scott",
+          color: "Czerwony",
+          category: "Kolarski",
+          price: 9999
+        },
+        {
+          id: 94,
+          image: "Bike14.jpg",
+          brand: "Cannondale",
+          color: "Biały",
+          category: "Górski",
+          price: 7499
+        },
+
+
+
+
+        {
+          id: 95,
+          image: "Bike13.jpg",
+          brand: "Specialized",
+          color: "Zielony",
+          category: "Miejski",
+          price: 5299
+        },
+
+
+        {
+          id: 96,
+          image: "Bike16.jpg",
+          brand: "Giant",
+          color: "Czarny",
+          category: "Górski",
+          price: 7899
+        },
+        {
+          id: 97,
+          image: "Bike15.jpg",
+          brand: "Trek",
+          color: "Niebieski",
+          category: "Górski",
+          price: 6199
+        },
+ 
+
+
+
+
+
+
+
+        {
+          id: 98,
+          image: "Bike18.jpg",
+          brand: "Scott",
+          color: "Czerwony",
+          category: "Kolarski",
+          price: 9299
+        },
+
+
+        {
+          id: 99,
+          image: "Bike14.jpg",
+          brand: "Cannondalee",
+          color: "Biały",
+          category: "Terenowy",
+          price: 7999
+        },
+
+
+
+        
+
+ 
 
       ],
       brands: [],
