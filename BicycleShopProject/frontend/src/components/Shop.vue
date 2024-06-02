@@ -229,12 +229,21 @@ export default {
           price: 3999
         },
         {
-          id: 21,
+          id: 21, 
           image: 'Bike20.jpg',
           brand: 'Kross',
           color: 'Czarny',
           purpose: 'Górski',
           price: 10999
+        }
+        ,
+        {
+          id: 22,
+          image: 'Bike12.jpg',
+          brand: 'Giant',
+          color: 'Czarny',
+          purpose: 'Terenowy',
+          price: 5999
         }
         ]
       };
