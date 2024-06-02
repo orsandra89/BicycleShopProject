@@ -40,12 +40,12 @@ export default {
             try {
                 const response = await axios.post('/login/', form.value);
                 console.log(response.data);
-                if (response.data.message === 'Login successful') {
-                    localStorage.setItem('user', JSON.stringify(response.data.username));
+                if (response.data.message === 'User logged in successfully') {
+                    localStorage.setItem('user', JSON.stringify(response.data));
                     showSuccessAlert.value = true;
                     setTimeout(() => {
                         router.push({ name: 'Main' }).then(() => window.location.reload());
-                    }, 2000);
+                    }, 1000);
                 } else {
                     showErrorAlert.value = true;
                 }

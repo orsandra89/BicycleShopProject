@@ -27,6 +27,8 @@
                     <router-link v-if="isLoggedIn" to="/user-panel" class="dropdown-item">Profil</router-link>
                     <router-link v-if="isLoggedIn" to="/order-history" class="dropdown-item">Historia
                         Zamówień</router-link>
+                    <b-dropdown-item v-if="isLoggedIn && is_superuser" href="http://localhost:8000/admin">Panel
+                        Admina</b-dropdown-item>
                     <router-link v-if="!isLoggedIn" to="/rejestracja" class="dropdown-item">Rejestracja</router-link>
                     <router-link v-if="!isLoggedIn" to="/logowanie" class="dropdown-item">Logowanie</router-link>
                     <b-dropdown-item v-if="isLoggedIn" @click="logout">Wyloguj</b-dropdown-item>
@@ -43,13 +45,15 @@ export default {
         return {
             username: 'Zaloguj się',
             isLoggedIn: false,
+            is_superuser: false,
         };
     },
     mounted() {
         const user = JSON.parse(localStorage.getItem('user'));
         if (user && user !== "undefined") {
-            this.username = user;
+            this.username = user.username;
             this.isLoggedIn = true;
+            this.is_superuser = user.is_superuser;
         }
     },
     methods: {
@@ -57,6 +61,7 @@ export default {
             localStorage.removeItem('user');
             this.username = 'Zaloguj się';
             this.isLoggedIn = false;
+            this.is_superuser = false;
             window.location.reload();
         }
     }

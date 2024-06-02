@@ -23,6 +23,8 @@ import {
   BSpinner,
   BCarousel,
   BCarouselSlide,
+  BImg,
+  BFormSelect,
 } from "bootstrap-vue-next";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -60,6 +62,8 @@ app.component("BAlert", BAlert);
 app.component("BSpinner", BSpinner);
 app.component("BCarousel", BCarousel);
 app.component("BCarouselSlide", BCarouselSlide);
+app.component("BImg", BImg);
+app.component("BFormSelect", BFormSelect);
 
 library.add(faBasketShopping);
 library.add(faCircleUser);
