@@ -219,12 +219,128 @@ export default {
           color: 'Czarny',
           category: 'Terenowy',
           price: 5999
+        },
+        {
+          id: 23,
+          image: 'Bike9.jpg',
+          brand: 'Bike',
+          color: 'Szary',
+          category: 'Szosowy',
+          price: 9999
+
+        },
+        {
+          id: 24,
+          image: 'Bike20.jpg',
+          brand: 'Merida',
+          color: 'Czerwony',
+          category: 'Górski',
+          price: 6799
+        },
+        {
+          id: 25,
+          image: 'Bike18.jpg',
+          brand: 'Specialized',
+          color: 'Biały',
+          category: 'Kolarski',
+          price: 11999
+        },
+        {
+          id: 26,
+          image: 'Bike15.jpg',
+          brand: 'Cannondale',
+          color: 'Zielony',
+          category: 'Górski',
+          price: 5599
+        },
+        {
+          id: 27,
+          image: 'Bike17.jpg',
+          brand: 'Scott',
+          color: 'Niebieski',
+          category: 'Kolarski',
+          price: 8999
+        },
+        {
+          id: 28,
+          image: 'Bike13.jpg',
+          brand: 'Cube',
+          color: 'Czarny',
+          category: 'Górski',
+          price: 7999
+        },
+        {
+          id: 29,
+          image: 'Bike12.jpg',
+          brand: 'Bianchi',
+          color: 'Turkusowy',
+          category: 'Kolarski',
+          price: 13999
+        },
+        {
+          id: 30,
+          image: 'Bike16.jpg',
+          brand: 'Focus',
+          color: 'Szary',
+          category: 'Górski',
+          price: 6299
+        },
+        {
+          id: 31,
+          image: 'Bike19.jpg',
+          brand: 'Cannondale',
+          color: 'Pomarańczowy',
+          category: 'Terenowy',
+          price: 4999
+        },
+        {
+          id: 32,
+          image: 'Bike14.jpg',
+          brand: 'Giant',
+          color: 'Czerwony',
+          category: 'Szosowy',
+          price: 10999
+        },
+        {
+          id: 33,
+          image: 'Bike18.jpg',
+          brand: 'Canyon',
+          color: 'Czarny',
+          category: 'Kolarski',
+          price: 15999
+        },
+        {
+          id: 34,
+          image: 'Bike17.jpg',
+          brand: 'Stevens',
+          color: 'Biały',
+          category: 'Miejski',
+          price: 4199
+        },
+        {
+          id: 35,
+          image: 'Bike13.jpg',
+          brand: 'KTM',
+          color: 'Zielony',
+          category: 'Górski',
+          price: 8799
         }
+
+
+
+
+
       ],
       brands: [],
       categories: [],
       isLoggedIn: false,
     };
+
+
+
+
+
+
   },
   async created() {
     try {
