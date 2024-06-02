@@ -2,7 +2,8 @@
   <div class="cart">
     <h1>Twój koszyk</h1>
     <div class="cart-item" v-for="(item, index) in cart" :key="item.id">
-      <img :src="require(`@/assets/images/BikesShop/${item.image}`)" alt="bike image" class="cart-item-image"/>
+      <b-img fluid :src="require('@/assets/images/BikesShop/bike-placeholder.png')" alt="default image" width="100"
+        height="100" />
       <h2>{{ item.brand }}</h2>
       <p>{{ item.color }}</p>
       <p>{{ item.purpose }}</p>
@@ -15,7 +16,7 @@
       <button @click="removeFromCart(index)">Usuń</button>
       <div v-if="itemAdded" class="notification">
         Dodano do koszyka!
-        </div>
+      </div>
     </div>
     <h2>Całkowita kwota: {{ totalAmount }} zł</h2>
     <button @click="completeOrder">Zrealizuj zamówienie</button>
@@ -29,7 +30,7 @@ export default {
   data() {
     return {
       cart: [],
-      itemAdded: false 
+      itemAdded: false
     };
   },
   created() {
@@ -55,7 +56,7 @@ export default {
         orders.push({
           ...item,
           date,
-          image: require(`@/assets/images/BikesShop/${item.image}`)
+          image: require(`@/assets/images/BikesShop/bike-placeholder.png`)
         });
       });
       localStorage.setItem('orders', JSON.stringify(orders));
@@ -84,7 +85,7 @@ export default {
     },
     checkout() {
       this.$emit('checkout', this.cart);
-      this.cart = []; 
+      this.cart = [];
       localStorage.removeItem('cart');
     },
     clearOrderHistory() {
@@ -93,7 +94,7 @@ export default {
       localStorage.setItem('cart', JSON.stringify(this.cart));
     },
 
-    
+
   }
 };
 </script>
@@ -105,7 +106,7 @@ export default {
   background-color: #f8f8f8;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .cart-item {
@@ -146,6 +147,7 @@ export default {
   height: 10%;
   object-fit: cover;
 }
+
 .notification {
   position: fixed;
   bottom: 20px;
